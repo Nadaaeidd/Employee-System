@@ -196,7 +196,7 @@ namespace EmployeeMangmentApp
                                 }
                         }
 
-                    } while (answer == 'y');
+                    } while (answer == 'y' || answer == 'Y');
 
                 }
                 else
@@ -209,7 +209,7 @@ namespace EmployeeMangmentApp
             {
                 Console.WriteLine("Do you want to change another cell");
                 char.TryParse(Console.ReadLine(), out ans);
-                Console.WriteLine((ans == 'y') ? "Please choice number from the list " : " ");
+                Console.WriteLine((ans == 'y'||ans=='Y') ? "Please choice number from the list " : " ");
             }
             public void InputIntValidation(ref int id)
             {
@@ -263,6 +263,7 @@ namespace EmployeeMangmentApp
             public void RemoveEmployee()
             {
                 Console.WriteLine("======================Removing Employee======================");
+                Console.Write("Please Enter The Id :");
                 int id = 0;
                 InputIntValidation(ref id);
                 Employees employeeToRemove = employees.Find(em => em.id == id);
@@ -275,7 +276,7 @@ namespace EmployeeMangmentApp
             {
                 Console.WriteLine("Do you want another transaction(Y/N) ?");
                 char.TryParse(Console.ReadLine(), out anotherTran);
-                if (anotherTran == 'y')
+                if (anotherTran == 'y' || anotherTran == 'Y') ;
                 {
                     Console.WriteLine("Please choice the next Transaction : ");
                     InputIntValidation(ref trans);
@@ -319,9 +320,11 @@ namespace EmployeeMangmentApp
                         break;
                     case 6:
                         Console.WriteLine("Exit...");
+                        
+                        
                         break;
                 }
-            } while (anotherTran == 'y');
+            } while (anotherTran == 'y'|| anotherTran == 'Y');
 
             Console.ReadKey();
 
