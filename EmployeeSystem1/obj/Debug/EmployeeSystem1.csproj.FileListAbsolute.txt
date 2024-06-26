@@ -1,0 +1,7 @@
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\bin\Debug\EmployeeSystem1.exe.config
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\bin\Debug\EmployeeSystem1.exe
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\bin\Debug\EmployeeSystem1.pdb
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\obj\Debug\EmployeeSystem1.csproj.AssemblyReference.cache
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\obj\Debug\EmployeeSystem1.csproj.CoreCompileInputs.cache
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\obj\Debug\EmployeeSystem1.exe
+C:\Users\HP\source\repos\EmployeeSystem1\EmployeeSystem1\obj\Debug\EmployeeSystem1.pdb
