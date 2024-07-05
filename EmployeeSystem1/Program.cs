@@ -1,52 +1,28 @@
-﻿using System;
+﻿using EmployeeSystem1;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Data.Sql;
+
 
 namespace EmployeeMangmentApp
 {
-    internal class Program
-    {
-        class Employees
-        {
-
-            public int id { get; set; }
-            public char gender { get; set; }
-            public string firstName { get; set; }
-            public string lastName { get; set; }
-            public string email { get; set; }
-            public string phone { get; set; }
-            public string status { get; set; }
-            public string department { get; set; }
-            public string age { get; set; }
-            public DateTime startDate { get; set; }
-
-
-            public Employees(int id, char gender, string firstName, string lasttName, string age, string email, string phone, string status, string department, DateTime startDate)
-            {
-                this.id = id;
-                this.gender = gender;
-                this.firstName = firstName;
-                this.lastName = lasttName;
-                this.age = age;
-                this.email = email;
-                this.phone = phone;
-                this.status = status;
-                this.department = department;
-                this.startDate = startDate;
-            }
-        }
+    internal class Program {
         class TheStaff
         {
-            List<Employees> employees;
+            List<EmployeeInfo> employees;
+            List<Salary> EmSalary;
             public TheStaff()
             {
-                employees = new List<Employees>();
+                employees = new List<EmployeeInfo>();
+                EmSalary = new List<Salary>();
             }
             public void AddEmployee()
             {
                 Console.WriteLine("===================Add Employer===================");
                 Console.Write("Enter Id :");
                 int id = 0;
-                InputIntValidation(ref id);
+                ValidationStaticMethods.InputIntValidation(ref id);
 
                 Console.Write("Enter FirstName :");
                 string firstName = Console.ReadLine();
@@ -77,9 +53,11 @@ namespace EmployeeMangmentApp
                 DateTime joiningData;
                 DateTime.TryParse(StringData, out joiningData);
 
+                Console.Write("Enter salary per month  :");
+                float sa = float.Parse(Console.ReadLine());
 
-                employees.Add(new Employees(id, gender, firstName, lastName, age, email, phone, status, department, joiningData));
-
+                employees.Add(new EmployeeInfo(id, gender, firstName, lastName, age, email, phone, status, department, joiningData));
+                EmSalary.Add(new Salary(sa));
                 Console.WriteLine("===========Employee added successfully!===========");
 
 
@@ -91,8 +69,8 @@ namespace EmployeeMangmentApp
                 Console.WriteLine("Enter the id : ");
 
                 int id = 0;
-                InputIntValidation(ref id);
-                Employees EmployeeToUpdate = employees.Find(emp => emp.id == id);
+                ValidationStaticMethods.InputIntValidation(ref id);
+                EmployeeInfo EmployeeToUpdate = employees.Find(emp => emp.id == id);
 
                 if (EmployeeToUpdate != null)
                 {
@@ -101,7 +79,7 @@ namespace EmployeeMangmentApp
                     char answer = 'y';
                     do
                     {
-                        InputIntValidation(ref choiceToUpdateint);
+                        ValidationStaticMethods.InputIntValidation(ref choiceToUpdateint);
 
                         switch (choiceToUpdateint)
                         {
@@ -209,24 +187,16 @@ namespace EmployeeMangmentApp
             {
                 Console.WriteLine("Do you want to change another cell");
                 char.TryParse(Console.ReadLine(), out ans);
-                Console.WriteLine((ans == 'y'||ans=='Y') ? "Please choice number from the list " : " ");
+                Console.WriteLine((ans == 'y' || ans == 'Y') ? "Please choice number from the list " : " ");
             }
-            public void InputIntValidation(ref int id)
-            {
-                while (!int.TryParse(Console.ReadLine(), out id))
-                {
-                    Console.WriteLine("Invalid Id , Please try again ");
-                }
-            }
-
-
+            
             public void PrintSpecificEmployee()
             {
                 int id = 0;
                 Console.WriteLine("===================Print Employee===================");
                 Console.Write("Enter Id : ");
-                InputIntValidation(ref id);
-                Employees employeeToPrint = employees.Find(em => em.id == id);
+                ValidationStaticMethods.InputIntValidation(ref id);
+                EmployeeInfo employeeToPrint = employees.Find(em => em.id == id);
 
                 Console.WriteLine($"=================== {employeeToPrint.firstName} {employeeToPrint.lastName}'s Info ===================");
                 Console.WriteLine($"Firstname: {employeeToPrint.firstName}");
@@ -244,7 +214,7 @@ namespace EmployeeMangmentApp
 
             public void PrintAllEmployees()
             {
-                foreach (Employees emp in employees)
+                foreach (EmployeeInfo emp in employees)
                 {
                     Console.WriteLine($"=================== {emp.firstName} {emp.lastName}'s Info ===================");
                     Console.WriteLine($"Firstname: {emp.firstName}");
@@ -265,66 +235,90 @@ namespace EmployeeMangmentApp
                 Console.WriteLine("======================Removing Employee======================");
                 Console.Write("Please Enter The Id :");
                 int id = 0;
-                InputIntValidation(ref id);
-                Employees employeeToRemove = employees.Find(em => em.id == id);
+                ValidationStaticMethods.InputIntValidation(ref id);
+                EmployeeInfo employeeToRemove = employees.Find(em => em.id == id);
                 employees.Remove(employeeToRemove);
 
                 Console.WriteLine("======================Employee has been removed======================");
 
             }
-            public void AnotherTransactionValidation(ref char anotherTran, ref int trans)
-            {
-                Console.WriteLine("Do you want another transaction(Y/N) ?");
-                char.TryParse(Console.ReadLine(), out anotherTran);
-                if (anotherTran == 'y' || anotherTran == 'Y') ;
-                {
-                    Console.WriteLine("Please choice the next Transaction : ");
-                    InputIntValidation(ref trans);
-                }
-
-            }
+          
         }
+
 
         static void Main(string[] args)
         {
             TheStaff st = new TheStaff();
-            Console.WriteLine("Choice The Transaction :");
-            Console.WriteLine("1)Add Employee\n2)Update Employee\n3)Remove Employee\n4)Print Specific Employee\n5)Print All Employees\n6)Exit");
-            int tranNum = 0;
-            char anotherTran = 'y';
-            st.InputIntValidation(ref tranNum);
-            do
+            Salary salary=new Salary();
+            Console.WriteLine("=========================Choose From The Follwing List=========================");
+            Console.WriteLine("1)Administrative Operations\n2)Finantial Operations");
+            int OpChoice = 0;
+            ValidationStaticMethods.InputIntValidation(ref OpChoice);
+            if (OpChoice == 1)
             {
-                switch (tranNum)
+                Console.WriteLine("============Administrative Operations============");
+                Console.WriteLine("Choose The Operation :");
+                Console.WriteLine("1)Add Employee\n2)Update Employee\n3)Remove Employee\n4)Print Specific Employee\n5)Print All Employees\n6)Exit");
+                int tranNum = 0;
+                char anotherTran = 'y';
+                ValidationStaticMethods.InputIntValidation(ref tranNum);
+                do
                 {
-                    case 1:
-                        st.AddEmployee();
-                        st.AnotherTransactionValidation(ref anotherTran, ref tranNum);
+                    switch (tranNum)
+                    {
+                        case 1:
+                            st.AddEmployee();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 2:
+                            st.UpdateEmployee();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 3:
+                            st.RemoveEmployee();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 4:
+                            st.PrintSpecificEmployee();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 5:
+                            st.PrintAllEmployees();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 6:
+                            Console.WriteLine("Exit...");
 
+
+                            break;
+                    }
+                } while (anotherTran == 'y' || anotherTran == 'Y');
+            }
+            else if(OpChoice==2) {
+                Console.WriteLine("==============Finantial Operations===============");
+                Console.WriteLine("Choose The Operation :"); 
+                Console.WriteLine("1)Update Salary \n2)Annual Raise\n3)Add Bonus\n4)Add Deduction\n5)Salary Per Year\n6)Print Employee Finantial Info \n7)Exit");
+                int tranNum = 0;
+                char anotherTran = 'y';
+                ValidationStaticMethods.InputIntValidation(ref tranNum);
+                switch (tranNum) { 
+                    case 1:
+                        salary.UpdateSalary();
+                        ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
                         break;
                     case 2:
-                        st.UpdateEmployee();
-                        st.AnotherTransactionValidation(ref anotherTran, ref tranNum);
+                        salary.AnnualRaise();
+                        ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
                         break;
-                    case 3:
-                        st.RemoveEmployee();
-                        st.AnotherTransactionValidation(ref anotherTran, ref tranNum);
-                        break;
-                    case 4:
-                        st.PrintSpecificEmployee();
-                        st.AnotherTransactionValidation(ref anotherTran, ref tranNum);
-                        break;
-                    case 5:
-                        st.PrintAllEmployees();
-                        st.AnotherTransactionValidation(ref anotherTran, ref tranNum);
-                        break;
-                    case 6:
-                        Console.WriteLine("Exit...");
-                        
-                        
-                        break;
+                        case 3:
+
+
                 }
-            } while (anotherTran == 'y'|| anotherTran == 'Y');
+            }
+            else
+            {
+                Console.WriteLine("Invalid Operation Number.....");
+            }
 
             Console.ReadKey();
 
