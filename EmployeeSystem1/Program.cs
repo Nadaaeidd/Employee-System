@@ -301,19 +301,31 @@ namespace EmployeeMangmentApp
                 int tranNum = 0;
                 char anotherTran = 'y';
                 ValidationStaticMethods.InputIntValidation(ref tranNum);
-                switch (tranNum) { 
-                    case 1:
-                        salary.UpdateSalary();
-                        ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
-                        break;
-                    case 2:
-                        salary.AnnualRaise();
-                        ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
-                        break;
+                do
+                {
+                    switch (tranNum)
+                    {
+                        case 1:
+                            salary.UpdateSalary();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 2:
+                            salary.AnnualRaise();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
                         case 3:
+                            salary.GetBonuse();
+                            ValidationStaticMethods.AnotherTransaction(ref anotherTran, ref tranNum);
+                            break;
+                        case 4:
 
 
-                }
+
+
+                    }
+
+                } while (anotherTran == 'y' || anotherTran == 'Y');
+                    
             }
             else
             {
